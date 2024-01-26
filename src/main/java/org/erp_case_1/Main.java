@@ -5,7 +5,13 @@ import org.erp_case_1.service.statistics.order.OrderStatisticsService;
 import org.erp_case_1.service.statistics.product.ProductStatisticsService;
 import org.erp_case_1.util.ExampleDataGenerator;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Main {
@@ -45,11 +51,14 @@ public class Main {
                 2006L
         );
 
+        httpGetExample();
+        httpPostExample();
+
     }
 
     public static void calculateAndPrintA(
             final Long... orderNumbers
-    ){
+    ) {
         final OrderStatisticsService orderStatisticsService =
                 new OrderStatisticsService();
 
@@ -59,7 +68,7 @@ public class Main {
 
     public static void calculateAndPrintB(
             final Long... orderNumbers
-    ){
+    ) {
         final OrderStatisticsService orderStatisticsService =
                 new OrderStatisticsService();
 
@@ -88,5 +97,66 @@ public class Main {
         productStatisticsService.findProductTotalSaleAmountsBasedOnOrders(productNumbers);
     }
 
+    public static void httpGetExample() {
+        try {
+            final URL url = new URL("https://jsonplaceholder.typicode.com/posts/1");
 
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestMethod("GET");
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                String line;
+                final StringBuilder response = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                System.out.println("Response: " + response.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void httpPostExample() {
+        try {
+            final URL url = new URL("https://jsonplaceholder.typicode.com/users");
+
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+
+            final String jsonInputString =
+                    "{\"name\": \"Muhammet Oğuzhan AYDOĞDU\"," +
+                            " \"username\": \"moaydogdu\"," +
+                            " \"email\": \"m.o.aydogdu@outlook.com\"}";
+
+            try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                wr.write(input, 0, input.length);
+            }
+
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String line;
+                    final StringBuilder response = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+
+                    System.out.println("Response: " + response.toString());
+                }
+            } else {
+                System.out.println("POST request failed.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
