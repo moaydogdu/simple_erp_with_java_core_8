@@ -51,8 +51,8 @@ public class Main {
                 2006L
         );
 
-/*      httpGetExample();
-        httpPostExample();*/
+      httpGetExample();
+      httpPostExample();
 
     }
 
