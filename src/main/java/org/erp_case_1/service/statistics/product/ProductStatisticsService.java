@@ -22,14 +22,28 @@ public class ProductStatisticsService {
         this.orderItemRepository = OrderItemRepository.getInstance();
     }
 
+    /**
+     * Question 4 : Tek tek mal bazlı, malların hangi siparişlerde kaç adet olduğunun çıktısını veren
+     * java kodu.
+     * <br> <br>
+     *
+     * This method calculates number of product sale amount with orders individually with given products
+     * via product numbers.
+     */
     public void findProductTotalSaleAmountsBasedOnOrders(
             final Long... productNumbers
     ) {
+        System.out.println("----------- QUESTION 4 : CALCULATING TOTAL SALE AMOUNT OF PRODUCTS IN ORDERS WITH GIVEN PRODUCT NUMBERS ----------\n");
+
         final List<ProductTotalSaleStatisticsResponse> listOfProductTotalSaleStatistics
                 = new ArrayList<>();
 
+        final StringBuilder productNumberStringBuilder = new StringBuilder(" ");
+
         for (Long productNumber : productNumbers)
         {
+            productNumberStringBuilder.append(productNumber).append(" ");
+
             final List<OrderItem> orderItemsByProduct = orderItemRepository
                     .findOrderItemsByProductNumber(productNumber);
 
@@ -43,7 +57,7 @@ public class ProductStatisticsService {
                             .productNumber(productNumber)
                             .build();
 
-            Map<Long, OrderSaleResponse> orderSaleResponseHashMap
+            final Map<Long, OrderSaleResponse> orderSaleResponseHashMap
                     = new HashMap<>();
 
             for (OrderItem orderItem : orderItemsByProduct)
@@ -55,7 +69,7 @@ public class ProductStatisticsService {
                 ))
                 {
                     orderSaleResponseHashMap.put(
-                            orderItem.getOrder().getNumber(),
+                            orderNumber,
                             OrderSaleResponse.builder()
                                     .orderNumber(orderNumber)
                                     .totalSaleCount(orderItem.getAmount())
@@ -64,10 +78,10 @@ public class ProductStatisticsService {
                     continue;
                 }
 
-                OrderSaleResponse response = orderSaleResponseHashMap.get(
+                final OrderSaleResponse oldOrderSaleResponse = orderSaleResponseHashMap.get(
                         orderItem.getOrder().getNumber());
 
-               response.setTotalSaleCount(response.getTotalSaleCount().add(orderItem.getAmount()));
+               oldOrderSaleResponse.setTotalSaleCount(oldOrderSaleResponse.getTotalSaleCount().add(orderItem.getAmount()));
             }
 
             productTotalSaleStatisticsResponse.setOrderSaleResponses(
@@ -77,7 +91,11 @@ public class ProductStatisticsService {
             listOfProductTotalSaleStatistics.add(productTotalSaleStatisticsResponse);
         }
 
+        System.out.println("Specified Products are ["+productNumberStringBuilder.toString()+"] and result is below; \n");
+
         listOfProductTotalSaleStatistics.forEach(System.out::println);
+
+        System.out.println("----------- QUESTION 4 : CALCULATING TOTAL SALE AMOUNT OF PRODUCTS IN ORDERS WITH GIVEN PRODUCT NUMBERS ----------");
     }
 
 }

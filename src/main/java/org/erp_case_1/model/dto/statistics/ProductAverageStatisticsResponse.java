@@ -76,10 +76,10 @@ public class ProductAverageStatisticsResponse {
 
     @Override
     public String toString() {
-        return "ProductAverageStatisticsResponse{" +
-                "productNumber=" + productNumber +
+        return "{" +
+                "ProductNumber= " + productNumber +
                 ", totalCount= " + totalCount +
-                ", averagePrice=" + averagePrice +
+                ", averagePrice= " + averagePrice +
                 '}';
     }
 

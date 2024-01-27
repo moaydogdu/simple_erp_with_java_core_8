@@ -66,10 +66,10 @@ public class ProductTotalSaleStatisticsResponse {
 
     @Override
     public String toString() {
-        return "ProductTotalSaleStatisticsResponse{" +
-                "productNumber=" + productNumber +
-                ", orderSaleResponses{\n" + orderSaleResponses +
-                "\n}";
+        return "{" +
+                "productNumber= " + productNumber +
+                ", orderSaleResponses\n{" + orderSaleResponses +
+                "}\n}\n";
     }
 
     public static class ProductTotalSaleStatisticsResponseBuilder {

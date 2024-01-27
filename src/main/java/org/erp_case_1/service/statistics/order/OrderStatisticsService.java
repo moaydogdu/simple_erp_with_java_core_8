@@ -23,47 +23,91 @@ public class OrderStatisticsService {
         this.orderService = new OrderServiceImpl();
     }
 
+    /**
+     * Question 1 :  Üç siparişteki malların toplam tutarının çıktısını veren java kodu.
+     * <br> <br>
+     * This method calculates total product price with given orders via order numbers.
+     */
     public void calculateTotalPriceOfSpecifiedOrders(
             final Long... orderNumbers
     ) {
+        System.out.println("----------- QUESTION 1 : CALCULATING TOTAL PRICE WITH GIVEN ORDERS ----------");
         BigDecimal totalPriceOfSpecifiedOrders = BigDecimal.ZERO;
 
+        final StringBuilder orderNumberStringBuiler = new StringBuilder(" ");
+
         for (Long orderNumber : orderNumbers) {
+
+            orderNumberStringBuiler.append(orderNumber).append(" ");
+
             Order order = orderService.getOrderByNumber(orderNumber);
+
             totalPriceOfSpecifiedOrders = totalPriceOfSpecifiedOrders.add(order.getTotalPrice());
+
         }
 
-        System.out.println("Total price of specified orders : " + totalPriceOfSpecifiedOrders);
+        System.out.println("Total price of specified orders["+orderNumberStringBuiler.toString()+"] : " + totalPriceOfSpecifiedOrders);
+
+        System.out.println("----------- QUESTION 1 : CALCULATING TOTAL PRICE WITH GIVEN ORDERS ----------");
     }
 
+    /**
+     * Question 2 : Üç siparişteki bütün malların ortalama fiyatını bulan java kodu.
+     * <br> <br>
+     *
+     * This method calculates average unit prices of given orders via order numbers
+     */
     public void calculateAverageUnitPriceOfSpecifiedOrders(
             final Long... orderNumbers
     ) {
+        System.out.println("----------- QUESTION 2 : CALCULATING AVERAGE UNIT PRICE WITH GIVEN ORDERS ----------");
 
         BigDecimal averageOrderItemPriceOfOrders = BigDecimal.ZERO;
 
+        final StringBuilder orderNumberStringBuiler = new StringBuilder(" ");
+
         for (Long orderNumber : orderNumbers) {
+
+            orderNumberStringBuiler.append(orderNumber).append(" ");
+
             Order order = orderService.getOrderByNumber(orderNumber);
 
             averageOrderItemPriceOfOrders = order.getTotalPrice()
                     .divide(order.getTotalProductAmount(), 8, RoundingMode.HALF_UP);
+
         }
 
-        System.out.println("Average unit price of specified orders is: " + averageOrderItemPriceOfOrders);
+        System.out.println("Average unit price of specified orders [" + orderNumberStringBuiler.toString() + "] is: " + averageOrderItemPriceOfOrders);
+
+        System.out.println("----------- QUESTION 2 : CALCULATING AVERAGE UNIT PRICE WITH GIVEN ORDERS ----------");
     }
 
-
+    /**
+     * Question 3 : Üç siparişteki bütün malların tek tek mal bazlı ortalama fiyatını bulan java kodu.
+     * <br> <br>
+     *
+     * This method calculates every average unit prices of given orders via order numbers.
+     */
     public List<ProductAverageStatisticsResponse> calculateAverageUnitPriceOfEveryProductForSpecifiedOrders(
             final Long... orderNumbers
     ) {
-        Map<Long, ProductAverageStatisticsResponse> productAverageStatisticsResponseMap =
+        System.out.println("----------- QUESTION 3 : CALCULATING EVERY AVERAGE UNIT PRICE WITH GIVEN ORDERS ----------");
+
+        final Map<Long, ProductAverageStatisticsResponse> productAverageStatisticsResponseMap =
                 new HashMap<>();
 
+        final StringBuilder orderNumberStringBuiler = new StringBuilder(" ");
+
         for (Long orderNumber : orderNumbers) {
+
+            orderNumberStringBuiler.append(orderNumber).append(" ");
+
             Order order = orderService.getOrderByNumber(orderNumber);
+
             for (OrderItem orderItem : order.getOrderItems()) {
-                final Product product = orderItem.getProduct();
-                final Long productNumber = product.getNumber();
+
+
+                final Long productNumber = orderItem.getProduct().getNumber();
 
                 if (!productAverageStatisticsResponseMap.containsKey(productNumber)) {
 
@@ -82,6 +126,14 @@ public class OrderStatisticsService {
                 );
             }
         }
+
+        System.out.println("\nAverage unit price of products in specified orders [" + orderNumberStringBuiler.toString() + "] are;\n");
+
+        productAverageStatisticsResponseMap.values().forEach(System.out::println);
+
+        System.out.println();
+
+        System.out.println("----------- QUESTION 3 : CALCULATING EVERY AVERAGE UNIT PRICE WITH GIVEN ORDERS ----------");
 
         return new ArrayList<>(productAverageStatisticsResponseMap.values());
     }

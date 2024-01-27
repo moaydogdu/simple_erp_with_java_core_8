@@ -20,10 +20,12 @@ import java.util.stream.Collectors;
 public class ExampleDataGenerator {
 
     public static void generatedAllDataSet(){
+        System.out.println("---------- EXAMPLE DATA GENERATION IS STARTED ----------");
         createProductDataSet();
         createOrderDataSet1();
         createOrderDataSet2();
         createOrderDataSet3();
+        System.out.println("---------- EXAMPLE DATA GENERATION IS DONE ----------");
     }
     public static List<Product> createProductDataSet() {
         System.out.println("Initiating the Product creation process.");
@@ -44,7 +46,6 @@ public class ExampleDataGenerator {
                 .map(productCreateService::createProduct)
                 .collect(Collectors.toList());
 
-        createdProducts.forEach(System.out::println);
         System.out.println("Product creation process is successful!");
 
         return createdProducts;
@@ -86,6 +87,8 @@ public class ExampleDataGenerator {
             );
         }
 
+        System.out.println("Order creation process is successful!");
+
         return orderCreateService
                 .createOrder(1000L,orderItemCreateRequests);
     }
@@ -120,6 +123,8 @@ public class ExampleDataGenerator {
                             .build()
             );
         }
+
+        System.out.println("Order creation process is successful!");
 
         return orderCreateService
                 .createOrder(1001L,orderItemCreateRequests);
@@ -165,6 +170,8 @@ public class ExampleDataGenerator {
                             .build()
             );
         }
+
+        System.out.println("Order creation process is successful!");
 
         return orderCreateService
                 .createOrder(1002L,orderItemCreateRequests);

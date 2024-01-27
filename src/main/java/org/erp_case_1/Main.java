@@ -41,7 +41,7 @@ public class Main {
         );
         System.out.println();
 
-        calculateAndPrintD(
+          calculateAndPrintD(
                 2000L,
                 2001L,
                 2002L,
@@ -51,8 +51,8 @@ public class Main {
                 2006L
         );
 
-        httpGetExample();
-        httpPostExample();
+/*      httpGetExample();
+        httpPostExample();*/
 
     }
 
@@ -84,8 +84,6 @@ public class Main {
 
         final List<ProductAverageStatisticsResponse> response = orderStatisticsService
                 .calculateAverageUnitPriceOfEveryProductForSpecifiedOrders(orderNumbers);
-
-        response.forEach(System.out::println);
     }
 
     public static void calculateAndPrintD(
@@ -94,7 +92,8 @@ public class Main {
         final ProductStatisticsService productStatisticsService
                 = new ProductStatisticsService();
 
-        productStatisticsService.findProductTotalSaleAmountsBasedOnOrders(productNumbers);
+        productStatisticsService
+                .findProductTotalSaleAmountsBasedOnOrders(productNumbers);
     }
 
     public static void httpGetExample() {
