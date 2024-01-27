@@ -97,6 +97,7 @@ public class Main {
     }
 
     public static void httpGetExample() {
+        System.out.println("---------- QUESTION CHAPTER 2_1 (GET API EXAMPLE) ----------");
         try {
             final URL url = new URL("https://jsonplaceholder.typicode.com/posts/1");
 
@@ -116,9 +117,11 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("---------- QUESTION CHAPTER 2_1 (GET API EXAMPLE) ----------\n");
     }
 
     public static void httpPostExample() {
+        System.out.println("---------- QUESTION CHAPTER 2_2 (POST API EXAMPLE) ----------");
         try {
             final URL url = new URL("https://jsonplaceholder.typicode.com/users");
 
@@ -157,5 +160,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("---------- QUESTION CHAPTER 2_2 (POST API EXAMPLE) ----------");
     }
 }
